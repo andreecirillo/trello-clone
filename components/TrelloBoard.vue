@@ -30,13 +30,13 @@ const columns = ref<Column[]>([
 ]);
 </script>
 <template>
-    <div>
-        <div v-for="column in columns" :key="column.id">
+    <div class="flex gap-4 overflow-x-auto items-start">
+        <div class="column bg-gray-200 p-5 rounded min-w-[250px]" v-for="column in columns" :key="column.id">
             <header>
                 {{ column.title }}
             </header>
             <p v-for="task in column.tasks" :key="task.id">
-                {{ task. title }}
+                {{ task.title }}
             </p>
         </div>
     </div>
