@@ -31,13 +31,14 @@ const columns = ref<Column[]>([
 </script>
 <template>
     <div class="flex gap-4 overflow-x-auto items-start">
-        <div class="column bg-gray-200 p-5 rounded min-w-[250px]" v-for="column in columns" :key="column.id">
-            <header>
+        <div class="column bg-gray-200 p-5 rounded min-w-[250px] mb-20" v-for="column in columns" :key="column.id">
+            <header class="font-bold mb-4">
                 {{ column.title }}
             </header>
-            <p v-for="task in column.tasks" :key="task.id">
-                {{ task.title }}
-            </p>
+            <TrelloBoardTask v-for="task in column.tasks" :key="task.id" :task="task"/>      
+            <footer>
+                <button class="text-gray-500">+ Add a Card</button>
+            </footer>      
         </div>
     </div>
 </template>
