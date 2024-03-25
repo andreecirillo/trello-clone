@@ -33,18 +33,22 @@ const alt = useKeyModifier("Alt")
 </script>
 <template>
     <div>
-        <draggable v-model="columns" group="columns" :animation="150" handle=".drag-handle" item-key="id" class="flex gap-4 overflow-x-auto items-start">
-            <template #item="{element: column}: {element : Column} ">
+        <draggable v-model="columns" group="columns" :animation="150" handle=".drag-handle" item-key="id"
+            class="flex gap-4 overflow-x-auto items-start">
+            <template #item="{ element: column }: { element: Column }">
                 <div class="column bg-gray-200 p-5 rounded min-w-[250px] mb-20">
                     <header class="font-bold mb-4">
-                        <DragHandle/>
+                        <DragHandle />
                         {{ column.title }}
                     </header>
-                    <draggable v-model="column.tasks" :group="{name: 'tasks', pull: alt ? 'clone' : true}" :animation="150" handle=".drag-handle" item-key="id">
-                        <template #item="{element: task}: {element: Task}">
-                            <TrelloBoardTask :task="task" />
+                    <draggable v-model="column.tasks" :group="{ name: 'tasks', pull: alt ? 'clone' : true }"
+                        :animation="150" handle=".drag-handle" item-key="id">
+                        <template #item="{ element: task }: { element: Task }">
+                            <div>
+                                <TrelloBoardTask :task="task" />
+                            </div>
                         </template>
-                    </draggable>                    
+                    </draggable>
                     <footer>
                         <button class="text-gray-500">+ Add a Card</button>
                     </footer>
