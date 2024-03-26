@@ -12,7 +12,7 @@ const emit = defineEmits<{
 
 const focused = ref(false);
 
-onKeyStroke("Backspace", (e) => {
+onKeyStroke(["Backspace", "Delete"], (e) => {
   if(focused.value){
     emit("delete", props.task.id)
   }
