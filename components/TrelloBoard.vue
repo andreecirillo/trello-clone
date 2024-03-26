@@ -4,7 +4,7 @@ import type { Column, Task } from "~~/types"
 import draggable from "vuedraggable"
 import { nanoid } from "nanoid"
 
-const columns = ref<Column[]>([
+const columns = useLocalStorage<Column[]>("TrelloClone", [
     {
         id: nanoid(),
         title: "Backlog",
@@ -30,9 +30,33 @@ const columns = ref<Column[]>([
     { title: "In Progress", id: nanoid(), tasks: [] },
     { title: "QA", id: nanoid(), tasks: [] },
     { title: "Complete", id: nanoid(), tasks: [] }
-]);
+],
+{
+    serializer: {
+        read: (value) => {
+            return JSON.parse(value).map((column: Column) => {
+                column.tasks = column.tasks.map((task: Task) => {
+                    task.createdAt = new Date(task.createdAt);
+                    return task;
+                });
+                return column;
+            });
+        },
+        write: (value) => JSON.stringify(value)
+    }
+});
 
 const alt = useKeyModifier("Alt")
+
+watch(
+    columns,
+    () => {
+        // ajax request
+    },
+    {
+        deep: true
+    }
+);
 
 function createColumn() {
     const column: Column = {
@@ -58,7 +82,7 @@ function createColumn() {
                         <DragHandle />
                         <input type="text"
                             class="title-input bg-transparent focus:bg-white rounded px-1 w-4/5 focus:outline-none"
-                            @keyup.enter="($event.target as HTMLInputElement).blur()" />
+                            @keyup.enter="($event.target as HTMLInputElement).blur()" v-model="column.title" />
                         <button class="ml-2 text-red-600" title="Delete Column" @click="columns = columns.filter((c) => c.id !== column.id)">x</button>
                     </header>
                     <draggable v-model="column.tasks" :group="{ name: 'tasks', pull: alt ? 'clone' : true }"
